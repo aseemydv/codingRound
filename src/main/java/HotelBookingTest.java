@@ -1,4 +1,3 @@
-import com.sun.javafx.PlatformUtil;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -8,7 +7,7 @@ import org.testng.annotations.Test;
 
 public class HotelBookingTest {
 
-    WebDriver driver = new ChromeDriver();
+    WebDriver driver;
 
     @FindBy(linkText = "Hotels")
     private WebElement hotelLink;
@@ -25,7 +24,7 @@ public class HotelBookingTest {
     @Test
     public void shouldBeAbleToSearchForHotels() {
         setDriverPath();
-
+        driver = new ChromeDriver();
         driver.get("https://www.cleartrip.com/");
         hotelLink.click();
 
@@ -39,13 +38,14 @@ public class HotelBookingTest {
     }
 
     private void setDriverPath() {
-        if (PlatformUtil.isMac()) {
+        String PLATFORM = System.getProperty("os.name").toLowerCase();
+        if (PLATFORM.contains("mac")) {
             System.setProperty("webdriver.chrome.driver", "chromedriver");
         }
-        if (PlatformUtil.isWindows()) {
+        if (PLATFORM.contains("windows")) {
             System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
         }
-        if (PlatformUtil.isLinux()) {
+        if (PLATFORM.contains("linux")) {
             System.setProperty("webdriver.chrome.driver", "chromedriver_linux");
         }
     }
