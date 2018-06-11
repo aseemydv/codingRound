@@ -18,6 +18,7 @@ public class FlightBookingTest {
 
         setDriverPath();
         driver = new ChromeDriver();
+        driver.manage().window().maximize();
         driver.get("https://www.cleartrip.com/");
         waitFor(2000);
         driver.findElement(By.id("OneWay")).click();
@@ -31,8 +32,11 @@ public class FlightBookingTest {
         List<WebElement> originOptions = driver.findElement(By.id("ui-id-1")).findElements(By.tagName("li"));
         originOptions.get(0).click();
 
-        driver.findElement(By.id("toTag")).clear();
-        driver.findElement(By.id("toTag")).sendKeys("Delhi");
+        /**
+         * changed ID "toTag" to "ToTag"
+         */
+        driver.findElement(By.id("ToTag")).clear();
+        driver.findElement(By.id("ToTag")).sendKeys("Delhi");
 
         //wait for the auto complete options to appear for the destination
 
@@ -41,7 +45,10 @@ public class FlightBookingTest {
         List<WebElement> destinationOptions = driver.findElement(By.id("ui-id-2")).findElements(By.tagName("li"));
         destinationOptions.get(0).click();
 
-        driver.findElement(By.xpath("//*[@id='ui-datepicker-div']/div[1]/table/tbody/tr[3]/td[7]/a")).click();
+        /**
+         * changed div[1] to div[2] for selecting an available date from next month
+         */
+        driver.findElement(By.xpath("//*[@id='ui-datepicker-div']/div[2]/table/tbody/tr[3]/td[7]/a")).click();
 
         //all fields filled in. Now click on search
         driver.findElement(By.id("SearchBtn")).click();
