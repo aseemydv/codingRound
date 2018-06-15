@@ -1,13 +1,16 @@
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
-public class HotelBookingTest {
+import static org.openqa.selenium.support.PageFactory.*;
 
-    WebDriver driver;
+public class HotelBookingTest extends BaseSetup{
+
+    private WebDriver driver;
+    BaseSetup bs = new BaseSetup();
 
     @FindBy(linkText = "Hotels")
     private WebElement hotelLink;
@@ -21,33 +24,31 @@ public class HotelBookingTest {
     @FindBy(id = "travellersOnhome")
     private WebElement travellerSelection;
 
-    @Test
-    public void shouldBeAbleToSearchForHotels() {
-        setDriverPath();
-        driver = new ChromeDriver();
-        driver.get("https://www.cleartrip.com/");
-        hotelLink.click();
-
-        localityTextBox.sendKeys("Indiranagar, Bangalore");
-
-        new Select(travellerSelection).selectByVisibleText("1 room, 2 adults");
-        searchButton.click();
-
-        driver.quit();
-
+    @Parameters({"url"})
+    @BeforeTest
+    public void setUpBeforeTest(String url){
+        bs.setUpBeforeTest(url);
     }
 
-    private void setDriverPath() {
-        String PLATFORM = System.getProperty("os.name").toLowerCase();
-        if (PLATFORM.contains("mac")) {
-            System.setProperty("webdriver.chrome.driver", "chromedriver");
-        }
-        if (PLATFORM.contains("windows")) {
-            System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
-        }
-        if (PLATFORM.contains("linux")) {
-            System.setProperty("webdriver.chrome.driver", "chromedriver_linux");
-        }
+    @Parameters({"browser"})
+    @BeforeClass
+    public void setUp(String browser) throws InterruptedException {
+        driver = bs.setUpBeforeClass(browser);
+    }
+
+    @Test
+    public void shouldBeAbleToSearchForHotels() {
+        PageFactory.initElements(driver, this);
+        hotelLink.click();
+        localityTextBox.sendKeys("Indiranagar, Bangalore");
+        new Select(travellerSelection).selectByVisibleText("1 room, 2 adults");
+        searchButton.click();
+    }
+
+    @AfterClass
+    private void tearDown(){
+        //close the browser
+        driver.close();
     }
 
 }

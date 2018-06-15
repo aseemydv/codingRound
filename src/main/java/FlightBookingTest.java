@@ -2,24 +2,30 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import java.util.List;
 
-public class FlightBookingTest {
+public class FlightBookingTest extends BaseSetup{
 
     WebDriver driver;
+    BaseSetup bs = new BaseSetup();
 
+    @Parameters({"url"})
+    @BeforeTest
+    public void setUpBeforeTest(String url){
+        bs.setUpBeforeTest(url);
+    }
+
+    @Parameters({"browser"})
+    @BeforeClass
+    public void setUp(String browser) throws InterruptedException {
+        driver = bs.setUpBeforeClass(browser);
+    }
     @Test
     public void testThatResultsAppearForAOneWayJourney() {
 
-        setDriverPath();
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.get("https://www.cleartrip.com/");
         waitFor(2000);
         driver.findElement(By.id("OneWay")).click();
 
@@ -56,12 +62,13 @@ public class FlightBookingTest {
         waitFor(5000);
         //verify that result appears for the provided journey search
         Assert.assertTrue(isElementPresent(By.className("searchSummary")));
-
-        //close the browser
-        driver.quit();
-
     }
 
+    @AfterClass
+    private void tearDown(){
+        //close the browser
+        driver.close();
+    }
 
     private void waitFor(int durationInMilliSeconds) {
         try {
@@ -71,26 +78,12 @@ public class FlightBookingTest {
         }
     }
 
-
     private boolean isElementPresent(By by) {
         try {
             driver.findElement(by);
             return true;
         } catch (NoSuchElementException e) {
             return false;
-        }
-    }
-
-    private void setDriverPath() {
-        String PLATFORM = System.getProperty("os.name").toLowerCase();
-        if (PLATFORM.contains("mac")) {
-            System.setProperty("webdriver.chrome.driver", "chromedriver");
-        }
-        if (PLATFORM.contains("windows")) {
-            System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
-        }
-        if (PLATFORM.contains("linux")) {
-            System.setProperty("webdriver.chrome.driver", "chromedriver_linux");
         }
     }
 }

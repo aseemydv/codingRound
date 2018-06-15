@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="hf-test-suite" parallel="none">
-    <test name="test_edge">
+    <parameter name="url" value="https://www.cleartrip.com/" />
+    <!--<test name="checkOnChrome">-->
+        <!--<parameter name="browser" value="chrome" />-->
+        <!--<classes>-->
+            <!--<class name="FlightBookingTest" />-->
+            <!--<class name="HotelBookingTest" />-->
+            <!--<class name="SignInTest" />-->
+        <!--</classes>-->
+    <!--</test>-->
+    <test name="checkOnFirefox">
+        <parameter name="browser" value="firefox" />
         <classes>
-            <class name="FlightBookingTest" />
+            <!--<class name="FlightBookingTest" />-->
+            <class name="HotelBookingTest" />
+            <!--<class name="SignInTest" />-->
         </classes>
     </test>
 </suite>
