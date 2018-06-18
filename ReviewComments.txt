@@ -1,0 +1,26 @@
+Comments common to all Test-Classes:
+-------------
+
+1. Created a common setup class (BaseSetup.java) for looking up available driver for particular platform.
+2. Removed dependency from "PlatformUtil" class for looking up available platform, now "System.getProperty" is used.
+3. Added TestNG suite for easily running tests on different browsers, getting reports in HTML format, using different annotations.
+4. Added setUp and tearDown methods with TestNg annotations @BeforeTest, @BeforeClass and @AfterClass
+
+
+FlightBookingTest.java
+-------------
+
+1. Found string mismatch error while lookin up for an ID, changed "toTag" to "ToTag"
+2. Changed date selection in calendar to always llok for second month displayed, there will be no chance of selecting a date that is unavailable while testing.
+
+
+SignInTest.java
+-------------
+
+1. WebDriver wasn't able to take control of modal-window after sign-in button is clicked (as the code wasn't available in DOM), added "switchTo()" to take care of that.
+
+
+HotelBookingTest.java
+-------------
+
+1. Added "PageFactory.initElements" to initialise the page objects, to make use of webelements created using FindBy annotation.
